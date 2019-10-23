@@ -1,34 +1,26 @@
 package com.adaptionsoft.games.uglytrivia.domain;
 
+import com.adaptionsoft.games.uglytrivia.domain.questions.ThemeQuestions;
+
 import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.List;
 
 public class Game {
 
 	private Printer printer;
+	private  List<ThemeQuestions> questions;
 
     ArrayList players = new ArrayList();
     int[] places = new int[6];
     int[] purses  = new int[6];
     boolean[] inPenaltyBox  = new boolean[6];
-    
-    LinkedList popQuestions = new LinkedList();
-    LinkedList scienceQuestions = new LinkedList();
-    LinkedList sportsQuestions = new LinkedList();
-    LinkedList rockQuestions = new LinkedList();
-    
+
     int currentPlayer = 0;
     boolean isGettingOutOfPenaltyBox;
-    
-    public  Game(Printer printer){
-    	this.printer = printer;
 
-    	for (int i = 0; i < 50; i++) {
-			popQuestions.addLast("Pop Question " + i);
-			scienceQuestions.addLast(("Science Question " + i));
-			sportsQuestions.addLast(("Sports Question " + i));
-			rockQuestions.addLast("Rock Question " + i);
-    	}
+    public  Game(Printer printer, List<ThemeQuestions> questions) {
+		this.printer = printer;
+		this.questions = questions;
     }
 
 	public void add(String playerName) {
@@ -37,7 +29,7 @@ public class Game {
 	    places[playerNumber] = 0;
 	    purses[playerNumber] = 0;
 	    inPenaltyBox[playerNumber] = false;
-	    
+
 	    printer.print(playerName + " was added");
 		printer.print("They are player number " + playerNumber);
 	}
@@ -45,17 +37,17 @@ public class Game {
 	public void roll(int roll) {
 		printer.print(players.get(currentPlayer) + " is the current player");
 		printer.print("They have rolled a " + roll);
-		
+
 		if (inPenaltyBox[currentPlayer]) {
 			if (roll % 2 != 0) {
 				isGettingOutOfPenaltyBox = true;
-				
+
 				printer.print(players.get(currentPlayer) + " is getting out of the penalty box");
 				places[currentPlayer] = places[currentPlayer] + roll;
 				if (places[currentPlayer] > 11) places[currentPlayer] = places[currentPlayer] - 12;
-				
+
 				printer.print(players.get(currentPlayer)
-						+ "'s new location is " 
+						+ "'s new location is "
 						+ places[currentPlayer]);
 				printer.print("The category is " + currentCategory());
 				askQuestion();
@@ -63,31 +55,31 @@ public class Game {
 				printer.print(players.get(currentPlayer) + " is not getting out of the penalty box");
 				isGettingOutOfPenaltyBox = false;
 				}
-			
+
 		} else {
-		
+
 			places[currentPlayer] = places[currentPlayer] + roll;
 			if (places[currentPlayer] > 11) places[currentPlayer] = places[currentPlayer] - 12;
-			
+
 			printer.print(players.get(currentPlayer) + "'s new location is " + places[currentPlayer]);
 			printer.print("The category is " + currentCategory());
 			askQuestion();
 		}
-		
+
 	}
 
 	private void askQuestion() {
 		if (currentCategory() == "Pop")
-			printer.print(popQuestions.removeFirst());
+			printer.print(questions.get(0).list().remove(0));
 		if (currentCategory() == "Science")
-			printer.print(scienceQuestions.removeFirst());
+			printer.print(questions.get(1).list().remove(0));
 		if (currentCategory() == "Sports")
-			printer.print(sportsQuestions.removeFirst());
+			printer.print(questions.get(2).list().remove(0));
 		if (currentCategory() == "Rock")
-			printer.print(rockQuestions.removeFirst());
+			printer.print(questions.get(3).list().remove(0));
 	}
-	
-	
+
+
 	private String currentCategory() {
 		if (places[currentPlayer] == 0) return "Pop";
 		if (places[currentPlayer] == 4) return "Pop";
@@ -134,7 +126,7 @@ public class Game {
 		printer.print("Question was incorrectly answered");
 		printer.print(players.get(currentPlayer)+ " was sent to the penalty box");
 		inPenaltyBox[currentPlayer] = true;
-		
+
 		currentPlayer++;
 		if (currentPlayer == players.size()) currentPlayer = 0;
 		return true;
