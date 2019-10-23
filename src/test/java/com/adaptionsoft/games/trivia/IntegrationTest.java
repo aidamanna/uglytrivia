@@ -1,6 +1,6 @@
 package com.adaptionsoft.games.trivia;
 
-import com.adaptionsoft.games.uglytrivia.Game;
+import com.adaptionsoft.games.uglytrivia.domain.Game;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
+import com.adaptionsoft.games.uglytrivia.infrastructure.Console;
 import org.approvaltests.Approvals;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,10 +16,11 @@ import org.junit.Test;
 public class IntegrationTest {
 
     private ByteArrayOutputStream triviaOutput;
-    private Game game;
     private static List<String> players = Arrays.asList("Chet", "Pat", "Sue");
     private static Random randomNumber;
     private static boolean notAWinner;
+
+    private Game game;
 
     @Before
     public void setUp() {
@@ -26,7 +28,7 @@ public class IntegrationTest {
         PrintStream printStream = new PrintStream(triviaOutput);
         System.setOut(printStream);
 
-        game = new Game();
+        game = new Game(new Console());
         randomNumber = new Random(100);
     }
 
