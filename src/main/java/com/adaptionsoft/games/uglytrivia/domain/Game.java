@@ -1,17 +1,16 @@
 package com.adaptionsoft.games.uglytrivia.domain;
 
+import com.adaptionsoft.games.uglytrivia.domain.questions.GameQuestions;
 import com.adaptionsoft.games.uglytrivia.domain.questions.Theme;
-import com.adaptionsoft.games.uglytrivia.domain.questions.ThemeQuestions;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 import static com.adaptionsoft.games.uglytrivia.domain.questions.Theme.*;
 
 public class Game {
 
 	private Printer printer;
-	private Map<Theme, ThemeQuestions> questions;
+	private GameQuestions questions;
 
     ArrayList players = new ArrayList();
     int[] places = new int[6];
@@ -21,7 +20,7 @@ public class Game {
     int currentPlayer = 0;
     boolean isGettingOutOfPenaltyBox;
 
-    public  Game(Printer printer, Map<Theme, ThemeQuestions> questions) {
+    public  Game(Printer printer, GameQuestions questions) {
 		this.printer = printer;
 		this.questions = questions;
     }
@@ -47,7 +46,7 @@ public class Game {
 				printer.print(players.get(currentPlayer) + " is getting out of the penalty box");
 
 				advancePlayer(roll);
-				askQuestion();
+				printer.print(questions.getBy(currentTheme()));
 			} else {
 				isGettingOutOfPenaltyBox = false;
 				printer.print(players.get(currentPlayer) + " is not getting out of the penalty box");
@@ -55,7 +54,7 @@ public class Game {
 
 		} else {
 			advancePlayer(roll);
-			askQuestion();
+			printer.print(questions.getBy(currentTheme()));
 		}
 
 	}
@@ -67,21 +66,10 @@ public class Game {
 		printer.print(players.get(currentPlayer)
 				+ "'s new location is "
 				+ places[currentPlayer]);
-		printer.print("The category is " + currentCategory().getDescription());
+		printer.print("The category is " + currentTheme().getDescription());
 	}
 
-	private void askQuestion() {
-		if (currentCategory() == POP)
-			printer.print(questions.get(POP).list().remove(0));
-		if (currentCategory() == SCIENCE)
-			printer.print(questions.get(SCIENCE).list().remove(0));
-		if (currentCategory() == SPORTS)
-			printer.print(questions.get(SPORTS).list().remove(0));
-		if (currentCategory() == ROCK)
-			printer.print(questions.get(ROCK).list().remove(0));
-	}
-
-	private Theme currentCategory() {
+	private Theme currentTheme() {
 		int position = places[currentPlayer];
 		if (position == 0 || position == 4 || position == 8) return POP;
 		if (position == 1 || position == 5 || position == 9) return SCIENCE;

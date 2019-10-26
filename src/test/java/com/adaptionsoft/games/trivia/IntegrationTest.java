@@ -25,7 +25,7 @@ public class IntegrationTest {
     public void setUp() {
         setOutputStreamToString();
 
-        Map<Theme, ThemeQuestions> questions = generateGameQuestions();
+        GameQuestions questions = generateGameQuestions();
 
         game = new Game(new Console(), questions);
         randomNumber = new Random(100);
@@ -49,7 +49,7 @@ public class IntegrationTest {
         System.setOut(printStream);
     }
 
-    private  Map<Theme, ThemeQuestions> generateGameQuestions() {
+    private  GameQuestions generateGameQuestions() {
         PopQuestions pop = new PopQuestions();
         pop.generate(NUMBER_OF_QUESTIONS);
         ScienceQuestions science = new ScienceQuestions();
@@ -59,12 +59,13 @@ public class IntegrationTest {
         RockQuestions rock = new RockQuestions();
         rock.generate(NUMBER_OF_QUESTIONS);
 
-        Map<Theme, ThemeQuestions> gameQuestions = new HashMap<Theme, ThemeQuestions>();
-        gameQuestions.put(pop.getTheme(), pop);
-        gameQuestions.put(science.getTheme(), science);
-        gameQuestions.put(sports.getTheme(), sports);
-        gameQuestions.put(rock.getTheme(), rock);
+        Map<Theme, ThemeQuestions> themeQuestionsMap = new HashMap<Theme, ThemeQuestions>();
+        themeQuestionsMap.put(pop.getTheme(), pop);
+        themeQuestionsMap.put(science.getTheme(), science);
+        themeQuestionsMap.put(sports.getTheme(), sports);
+        themeQuestionsMap.put(rock.getTheme(), rock);
 
+        GameQuestions gameQuestions = new GameQuestions(themeQuestionsMap);
         return gameQuestions;
     }
 
