@@ -25,7 +25,7 @@ public class ScienceQuestions implements ThemeQuestions {
 
     public void generate(int numberOfQuestions) {
         for (int i = 0; i < numberOfQuestions; i++) {
-            questions.add("Science Question " + i);
+            questions.add(theme.getDescription() + " Question " + i);
         }
     }
 }

@@ -44,56 +44,49 @@ public class Game {
 		if (inPenaltyBox[currentPlayer]) {
 			if (roll % 2 != 0) {
 				isGettingOutOfPenaltyBox = true;
-
 				printer.print(players.get(currentPlayer) + " is getting out of the penalty box");
-				places[currentPlayer] = places[currentPlayer] + roll;
-				if (places[currentPlayer] > 11) places[currentPlayer] = places[currentPlayer] - 12;
 
-				printer.print(players.get(currentPlayer)
-						+ "'s new location is "
-						+ places[currentPlayer]);
-				printer.print("The category is " + currentCategory());
+				advancePlayer(roll);
 				askQuestion();
 			} else {
-				printer.print(players.get(currentPlayer) + " is not getting out of the penalty box");
 				isGettingOutOfPenaltyBox = false;
+				printer.print(players.get(currentPlayer) + " is not getting out of the penalty box");
 				}
 
 		} else {
-
-			places[currentPlayer] = places[currentPlayer] + roll;
-			if (places[currentPlayer] > 11) places[currentPlayer] = places[currentPlayer] - 12;
-
-			printer.print(players.get(currentPlayer) + "'s new location is " + places[currentPlayer]);
-			printer.print("The category is " + currentCategory());
+			advancePlayer(roll);
 			askQuestion();
 		}
 
 	}
 
+	private void advancePlayer(int roll) {
+		places[currentPlayer] = places[currentPlayer] + roll;
+		if (places[currentPlayer] > 11) places[currentPlayer] = places[currentPlayer] - 12;
+
+		printer.print(players.get(currentPlayer)
+				+ "'s new location is "
+				+ places[currentPlayer]);
+		printer.print("The category is " + currentCategory().getDescription());
+	}
+
 	private void askQuestion() {
-		if (currentCategory() == "Pop")
+		if (currentCategory() == POP)
 			printer.print(questions.get(POP).list().remove(0));
-		if (currentCategory() == "Science")
+		if (currentCategory() == SCIENCE)
 			printer.print(questions.get(SCIENCE).list().remove(0));
-		if (currentCategory() == "Sports")
+		if (currentCategory() == SPORTS)
 			printer.print(questions.get(SPORTS).list().remove(0));
-		if (currentCategory() == "Rock")
+		if (currentCategory() == ROCK)
 			printer.print(questions.get(ROCK).list().remove(0));
 	}
 
-
-	private String currentCategory() {
-		if (places[currentPlayer] == 0) return "Pop";
-		if (places[currentPlayer] == 4) return "Pop";
-		if (places[currentPlayer] == 8) return "Pop";
-		if (places[currentPlayer] == 1) return "Science";
-		if (places[currentPlayer] == 5) return "Science";
-		if (places[currentPlayer] == 9) return "Science";
-		if (places[currentPlayer] == 2) return "Sports";
-		if (places[currentPlayer] == 6) return "Sports";
-		if (places[currentPlayer] == 10) return "Sports";
-		return "Rock";
+	private Theme currentCategory() {
+		int position = places[currentPlayer];
+		if (position == 0 || position == 4 || position == 8) return POP;
+		if (position == 1 || position == 5 || position == 9) return SCIENCE;
+		if (position == 2 || position == 6 || position == 10) return SPORTS;
+		return ROCK;
 	}
 
 	public boolean wasCorrectlyAnswered() {
@@ -134,7 +127,6 @@ public class Game {
 		if (currentPlayer == players.size()) currentPlayer = 0;
 		return true;
 	}
-
 
 	private boolean didPlayerWin() {
 		return !(purses[currentPlayer] == 6);

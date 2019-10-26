@@ -1,8 +1,18 @@
 package com.adaptionsoft.games.uglytrivia.domain.questions;
 
 public enum Theme {
-    POP,
-    SCIENCE,
-    SPORTS,
-    ROCK
+    POP("Pop"),
+    SCIENCE("Science"),
+    SPORTS("Sports"),
+    ROCK("Rock");
+
+    private String description;
+
+    Theme(String description) {
+        this.description = description;
+    }
+
+    public String getDescription() {
+        return description;
+    }
 }
