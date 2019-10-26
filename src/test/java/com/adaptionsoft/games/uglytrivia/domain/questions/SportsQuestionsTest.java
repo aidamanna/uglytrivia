@@ -3,6 +3,7 @@ package com.adaptionsoft.games.uglytrivia.domain.questions;
 import org.junit.Before;
 import org.junit.Test;
 
+import static com.adaptionsoft.games.uglytrivia.domain.questions.Theme.SPORTS;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -22,5 +23,6 @@ public class SportsQuestionsTest {
 
         assertThat(questions.list().size(), is(NUMBER_OF_QUESTIONS));
         assertThat(questions.list().get(0), is("Sports Question 0"));
+        assertThat(questions.getTheme(), is(SPORTS));
     }
 }

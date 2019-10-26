@@ -1,14 +1,17 @@
 package com.adaptionsoft.games.uglytrivia.domain;
 
+import com.adaptionsoft.games.uglytrivia.domain.questions.Theme;
 import com.adaptionsoft.games.uglytrivia.domain.questions.ThemeQuestions;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Map;
+
+import static com.adaptionsoft.games.uglytrivia.domain.questions.Theme.*;
 
 public class Game {
 
 	private Printer printer;
-	private  List<ThemeQuestions> questions;
+	private Map<Theme, ThemeQuestions> questions;
 
     ArrayList players = new ArrayList();
     int[] places = new int[6];
@@ -18,7 +21,7 @@ public class Game {
     int currentPlayer = 0;
     boolean isGettingOutOfPenaltyBox;
 
-    public  Game(Printer printer, List<ThemeQuestions> questions) {
+    public  Game(Printer printer, Map<Theme, ThemeQuestions> questions) {
 		this.printer = printer;
 		this.questions = questions;
     }
@@ -70,13 +73,13 @@ public class Game {
 
 	private void askQuestion() {
 		if (currentCategory() == "Pop")
-			printer.print(questions.get(0).list().remove(0));
+			printer.print(questions.get(POP).list().remove(0));
 		if (currentCategory() == "Science")
-			printer.print(questions.get(1).list().remove(0));
+			printer.print(questions.get(SCIENCE).list().remove(0));
 		if (currentCategory() == "Sports")
-			printer.print(questions.get(2).list().remove(0));
+			printer.print(questions.get(SPORTS).list().remove(0));
 		if (currentCategory() == "Rock")
-			printer.print(questions.get(3).list().remove(0));
+			printer.print(questions.get(ROCK).list().remove(0));
 	}
 
 

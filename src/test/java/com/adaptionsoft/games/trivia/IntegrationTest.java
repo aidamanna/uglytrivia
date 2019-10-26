@@ -1,18 +1,15 @@
 package com.adaptionsoft.games.trivia;
 
-import com.adaptionsoft.games.uglytrivia.domain.*;
-
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
-
+import com.adaptionsoft.games.uglytrivia.domain.Game;
 import com.adaptionsoft.games.uglytrivia.domain.questions.*;
 import com.adaptionsoft.games.uglytrivia.infrastructure.Console;
 import org.approvaltests.Approvals;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+import java.util.*;
 
 public class IntegrationTest {
 
@@ -28,7 +25,7 @@ public class IntegrationTest {
     public void setUp() {
         setOutputStreamToString();
 
-        List<ThemeQuestions> questions = generateGameQuestions();
+        Map<Theme, ThemeQuestions> questions = generateGameQuestions();
 
         game = new Game(new Console(), questions);
         randomNumber = new Random(100);
@@ -52,17 +49,21 @@ public class IntegrationTest {
         System.setOut(printStream);
     }
 
-    private List<ThemeQuestions> generateGameQuestions() {
+    private  Map<Theme, ThemeQuestions> generateGameQuestions() {
         PopQuestions pop = new PopQuestions();
+        pop.generate(NUMBER_OF_QUESTIONS);
         ScienceQuestions science = new ScienceQuestions();
+        science.generate(NUMBER_OF_QUESTIONS);
         SportsQuestions sports = new SportsQuestions();
+        sports.generate(NUMBER_OF_QUESTIONS);
         RockQuestions rock = new RockQuestions();
+        rock.generate(NUMBER_OF_QUESTIONS);
 
-        List<ThemeQuestions> gameQuestions = Arrays.asList(pop, science, sports, rock);
-
-        for(ThemeQuestions themeQuestions : gameQuestions) {
-            themeQuestions.generate(NUMBER_OF_QUESTIONS);
-        }
+        Map<Theme, ThemeQuestions> gameQuestions = new HashMap<Theme, ThemeQuestions>();
+        gameQuestions.put(pop.getTheme(), pop);
+        gameQuestions.put(science.getTheme(), science);
+        gameQuestions.put(sports.getTheme(), sports);
+        gameQuestions.put(rock.getTheme(), rock);
 
         return gameQuestions;
     }
