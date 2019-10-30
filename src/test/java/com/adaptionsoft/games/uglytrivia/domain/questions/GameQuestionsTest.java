@@ -3,35 +3,27 @@ package com.adaptionsoft.games.uglytrivia.domain.questions;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import static com.adaptionsoft.games.uglytrivia.domain.questions.Theme.POP;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
 public class GameQuestionsTest {
 
-    private static final int NUMBER_OF_QUESTIONS = 2;
+    private static final int QUESTIONS_PER_THEME = 2;
 
-    public GameQuestions questions;
+    private GameQuestions gameQuestions;
 
     @Before
     public void setUp() {
-        PopQuestions pop = new PopQuestions();
-        pop.generate(NUMBER_OF_QUESTIONS);
-
-        Map<Theme, ThemeQuestions> themeQuestionsMap = new HashMap<Theme, ThemeQuestions>();
-        themeQuestionsMap.put(pop.getTheme(), pop);
-
-        questions = new GameQuestions(themeQuestionsMap);
+        gameQuestions = GameQuestions.create(QUESTIONS_PER_THEME);
     }
 
     @Test
     public void shouldReturnFistQuestionForTheSpecifiedTheme() {
-        String firstQuestion = questions.getBy(POP);
-        String secondQuestion = questions.getBy(POP);
+        String firstQuestion = gameQuestions.getBy(POP);
+        String secondQuestion = gameQuestions.getBy(POP);
 
+        assertThat(gameQuestions.getQuestions().size(), is(4));
         assertThat(firstQuestion, is("Pop Question 0"));
         assertThat(secondQuestion, is("Pop Question 1"));
     }

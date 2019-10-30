@@ -7,14 +7,15 @@ import static com.adaptionsoft.games.uglytrivia.domain.questions.Theme.POP;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-public class PopQuestionsTest {
+public class ThemeQuestionsTest {
 
-    public static final int NUMBER_OF_QUESTIONS = 50;
-    private PopQuestions questions;
+    private static final int NUMBER_OF_QUESTIONS = 2;
+    private static final Theme theme = POP;
+    private ThemeQuestions questions;
 
     @Before
     public void setUp() {
-        questions = new PopQuestions();
+        questions = new ThemeQuestions(theme);
     }
 
     @Test
@@ -23,6 +24,7 @@ public class PopQuestionsTest {
 
         assertThat(questions.list().size(), is(NUMBER_OF_QUESTIONS));
         assertThat(questions.list().get(0), is("Pop Question 0"));
+        assertThat(questions.list().get(1), is("Pop Question 1"));
         assertThat(questions.getTheme(), is(POP));
     }
 }

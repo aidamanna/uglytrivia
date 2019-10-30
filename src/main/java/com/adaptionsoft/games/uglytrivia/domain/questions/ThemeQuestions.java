@@ -1,12 +1,29 @@
 package com.adaptionsoft.games.uglytrivia.domain.questions;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public interface ThemeQuestions {
+public class ThemeQuestions {
 
-  List<String> list();
+    private List<String> questions;
+    private Theme theme;
 
-  Theme getTheme();
+    public ThemeQuestions(Theme theme) {
+        questions = new ArrayList<String>();
+        this.theme = theme;
+    }
 
-  void generate(int numberOfQuestions);
+    public List<String> list() {
+        return questions;
+    }
+
+    public Theme getTheme() {
+        return theme;
+    }
+
+    public void generate(int numberOfQuestions) {
+        for (int i = 0; i < numberOfQuestions; i++) {
+            questions.add(theme.getDescription() + " Question " + i);
+        }
+    }
 }
