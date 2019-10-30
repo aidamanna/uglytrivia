@@ -2,6 +2,7 @@ package com.adaptionsoft.games.trivia;
 
 import com.adaptionsoft.games.uglytrivia.domain.Game;
 import com.adaptionsoft.games.uglytrivia.domain.questions.GameQuestions;
+import com.adaptionsoft.games.uglytrivia.domain.Player;
 import com.adaptionsoft.games.uglytrivia.infrastructure.Console;
 import org.approvaltests.Approvals;
 import org.junit.Before;
@@ -16,7 +17,8 @@ import java.util.Random;
 public class IntegrationTest {
 
     private static final int QUESTIONS_PER_THEME = 50;
-    private static final List<String> players = Arrays.asList("Chet", "Pat", "Sue");
+    //private static final List<String> players = Arrays.asList("Chet", "Pat", "Sue");
+    private List<Player> players;
 
     private ByteArrayOutputStream triviaOutput;
     private static Random randomNumber;
@@ -29,13 +31,20 @@ public class IntegrationTest {
 
         GameQuestions questions = GameQuestions.create(QUESTIONS_PER_THEME);
 
-        game = new Game(new Console(), questions);
+        players = Arrays.asList(
+                new Player("Chet"),
+                new Player("Pat"),
+                new Player("Sue")
+        );
+
+
+        game = new Game(new Console(), questions, players);
         randomNumber = new Random(100);
     }
 
     @Test
     public void playUglyTriviaGame() {
-        addPlayersTo(game);
+        game.add(players);
 
         do {
             game.roll(dice());
@@ -49,12 +58,6 @@ public class IntegrationTest {
         triviaOutput = new ByteArrayOutputStream();
         PrintStream printStream = new PrintStream(triviaOutput);
         System.setOut(printStream);
-    }
-
-    private void addPlayersTo(Game game) {
-        for (String player : players) {
-            game.add(player);
-        }
     }
 
     private int dice() {
