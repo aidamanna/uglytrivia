@@ -1,4 +1,4 @@
-package com.adaptionsoft.games.uglytrivia.domain;
+package com.adaptionsoft.games.uglytrivia.domain.players;
 
 public class Player {
 

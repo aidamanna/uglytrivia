@@ -23,7 +23,7 @@ public class GameQuestions {
         return new GameQuestions(themeQuestionsMap);
     }
 
-    protected Map<Theme, ThemeQuestions> getQuestions() {
+    protected Map<Theme, ThemeQuestions> get() {
         return questions;
     }
 

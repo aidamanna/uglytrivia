@@ -23,7 +23,7 @@ public class GameQuestionsTest {
         String firstQuestion = gameQuestions.getBy(POP);
         String secondQuestion = gameQuestions.getBy(POP);
 
-        assertThat(gameQuestions.getQuestions().size(), is(4));
+        assertThat(gameQuestions.get().size(), is(4));
         assertThat(firstQuestion, is("Pop Question 0"));
         assertThat(secondQuestion, is("Pop Question 1"));
     }
