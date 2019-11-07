@@ -58,4 +58,8 @@ public class Player {
     private void restartPosition() {
         position -= NUMBER_OF_POSITIONS;
     }
+
+    public void setOutOfPenaltyBox() {
+        inPenaltyBox = false;
+    }
 }

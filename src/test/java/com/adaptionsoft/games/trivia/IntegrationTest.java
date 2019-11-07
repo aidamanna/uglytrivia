@@ -21,7 +21,6 @@ public class IntegrationTest {
 
     private ByteArrayOutputStream triviaOutput;
     private static Random randomNumber;
-    private static boolean notAWinner;
     private Game game;
 
     @Before
@@ -41,8 +40,8 @@ public class IntegrationTest {
 
         do {
             game.roll(dice());
-            notAWinner = answerQuestion(game);
-        } while (notAWinner);
+            answerQuestion(game);
+        } while (game.isFinished());
 
         Approvals.verify(triviaOutput.toString());
     }
@@ -57,11 +56,14 @@ public class IntegrationTest {
         return randomNumber.nextInt(5) + 1;
     }
 
-    private Boolean answerQuestion(Game game) {
-        if (randomNumber.nextInt(9) == 7) {
-            return game.wrongAnswer();
+    private void answerQuestion(Game game) {
+        boolean isWrongAnswer = randomNumber.nextInt(9) == 7;
+
+        if (isWrongAnswer) {
+            game.wrongAnswer();
+            return;
         }
 
-        return game.wasCorrectlyAnswered();
+        game.correctAnswer();
     }
 }

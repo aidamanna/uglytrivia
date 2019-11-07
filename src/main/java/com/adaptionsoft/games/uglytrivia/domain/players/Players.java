@@ -61,4 +61,8 @@ public class Players {
     public void setInPenaltyBox(int player) {
         players.get(player).setInPenaltyBox();
     }
+
+    public void setOutOfPenaltyBox(int player) {
+        players.get(player).setOutOfPenaltyBox();
+    }
 }
