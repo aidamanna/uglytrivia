@@ -37,12 +37,12 @@ public class Game {
     public void start() {
         for (int player = 0; player < players.getNumberOfPlayers(); player++) {
             printer.print(format(
-                PLAYER_ADDED_MESSAGE, players.getName(player), (player + 1)));
+                    PLAYER_ADDED_MESSAGE, players.getName(player), (player + 1)));
         }
     }
 
     public void roll(int roll) {
-        printer.print(format(ROLL_MESSAGE, players.getName(currentPlayer),roll));
+        printer.print(format(ROLL_MESSAGE, players.getName(currentPlayer), roll));
 
         updatePlayerPenaltyBoxStatus(roll);
 
@@ -62,10 +62,10 @@ public class Game {
         players.increasePurse(currentPlayer);
 
         printer.print(
-            format(
-                CORRECT_ANSWER_MESSAGE,
-                players.getName(currentPlayer),
-                players.getPurses(currentPlayer)));
+                format(
+                        CORRECT_ANSWER_MESSAGE,
+                        players.getName(currentPlayer),
+                        players.getPurses(currentPlayer)));
 
         gameFinished = players.didPlayerWin(currentPlayer);
 
@@ -79,22 +79,24 @@ public class Game {
         assignNextPlayer();
     }
 
-    public boolean isFinished() {
+    public boolean isNotFinished() {
         return gameFinished;
     }
 
     private void updatePlayerPenaltyBoxStatus(int roll) {
-        boolean isGettingOutOfPenaltyBox = isGettingOutOfPenaltyBox(roll);
+        if (!players.isInPenaltyBox(currentPlayer)) {
+            return;
+        }
 
-        if (players.isInPenaltyBox(currentPlayer) && isGettingOutOfPenaltyBox) {
+        if (isGettingOutOfPenaltyBox(roll)) {
             printer.print(format(OUT_OF_PENALTY_BOX_MESSAGE, players.getName(currentPlayer)));
 
             players.setOutOfPenaltyBox(currentPlayer);
+
+            return;
         }
 
-        if (players.isInPenaltyBox(currentPlayer) && !isGettingOutOfPenaltyBox) {
-            printer.print(format(IN_PENALTY_BOX_MESSAGE, players.getName(currentPlayer)));
-        }
+        printer.print(format(IN_PENALTY_BOX_MESSAGE, players.getName(currentPlayer)));
     }
 
     private boolean isGettingOutOfPenaltyBox(int roll) {
@@ -105,8 +107,8 @@ public class Game {
         players.advance(currentPlayer, roll);
 
         printer.print(players.getName(currentPlayer)
-            + "'s new location is "
-            + players.getPosition(currentPlayer));
+                + "'s new location is "
+                + players.getPosition(currentPlayer));
 
         printer.print("The category is " + currentTheme().getDescription());
     }
@@ -124,7 +126,6 @@ public class Game {
     }
 
     private void assignNextPlayer() {
-        currentPlayer++;
-        if (currentPlayer == players.getNumberOfPlayers()) currentPlayer = 0;
+        currentPlayer = (currentPlayer+1)%players.getNumberOfPlayers();
     }
 }

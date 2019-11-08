@@ -2,7 +2,6 @@ package com.adaptionsoft.games.uglytrivia.domain.players;
 
 public class Player {
 
-    public static final int LAST_POSITION = 11;
     public static final int NUMBER_OF_POSITIONS = 12;
     public static final int INCORRECT_PURSES = 6;
     private String name;
@@ -34,9 +33,7 @@ public class Player {
     }
 
     public void advance(int roll) {
-        position += roll;
-
-        if(isPositionHigherThanLast()) restartPosition();
+        position = (position + roll) % NUMBER_OF_POSITIONS;
     }
 
     public void increasePurse() {
@@ -49,14 +46,6 @@ public class Player {
 
     public boolean didPlayerWin() {
         return purses != INCORRECT_PURSES;
-    }
-
-    private boolean isPositionHigherThanLast() {
-        return position > LAST_POSITION;
-    }
-
-    private void restartPosition() {
-        position -= NUMBER_OF_POSITIONS;
     }
 
     public void setOutOfPenaltyBox() {
