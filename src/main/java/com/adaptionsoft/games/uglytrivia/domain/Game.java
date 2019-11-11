@@ -4,20 +4,12 @@ import static com.adaptionsoft.games.uglytrivia.domain.questions.Theme.POP;
 import static com.adaptionsoft.games.uglytrivia.domain.questions.Theme.ROCK;
 import static com.adaptionsoft.games.uglytrivia.domain.questions.Theme.SCIENCE;
 import static com.adaptionsoft.games.uglytrivia.domain.questions.Theme.SPORTS;
-import static java.lang.String.format;
 
 import com.adaptionsoft.games.uglytrivia.domain.players.Players;
 import com.adaptionsoft.games.uglytrivia.domain.questions.GameQuestions;
 import com.adaptionsoft.games.uglytrivia.domain.questions.Theme;
 
 public class Game {
-
-    public static final String PLAYER_ADDED_MESSAGE = "%s was added\nThey are player number %s";
-    public static final String OUT_OF_PENALTY_BOX_MESSAGE = "%s is getting out of the penalty box";
-    public static final String IN_PENALTY_BOX_MESSAGE = "%s is not getting out of the penalty box";
-    public static final String CORRECT_ANSWER_MESSAGE = "Answer was correct!!!!\n%s now has %s Gold Coins.";
-    public static final String INCORRECT_ANSWER_MESSAGE = "Question was incorrectly answered\n%s was sent to the penalty box";
-    public static final String ROLL_MESSAGE = "%s is the current player\nThey have rolled a %s";
 
     private Printer printer;
     private GameQuestions questions;
@@ -35,14 +27,11 @@ public class Game {
     }
 
     public void start() {
-        for (int player = 0; player < players.getNumberOfPlayers(); player++) {
-            printer.print(format(
-                    PLAYER_ADDED_MESSAGE, players.getName(player), (player + 1)));
-        }
+            printer.printPlayers(players);
     }
 
     public void roll(int roll) {
-        printer.print(format(ROLL_MESSAGE, players.getName(currentPlayer), roll));
+        printer.printRoll(players.getName(currentPlayer), roll);
 
         updatePlayerPenaltyBoxStatus(roll);
 
@@ -61,11 +50,7 @@ public class Game {
 
         players.increasePurse(currentPlayer);
 
-        printer.print(
-                format(
-                        CORRECT_ANSWER_MESSAGE,
-                        players.getName(currentPlayer),
-                        players.getPurses(currentPlayer)));
+        printer.printCorrectAnswer(players.getName(currentPlayer), players.getPurses(currentPlayer));
 
         gameFinished = players.didPlayerWin(currentPlayer);
 
@@ -75,7 +60,8 @@ public class Game {
     public void wrongAnswer() {
         players.setInPenaltyBox(currentPlayer);
 
-        printer.print(format(INCORRECT_ANSWER_MESSAGE, players.getName(currentPlayer)));
+        printer.printIncorrectAnswer(players.getName(currentPlayer));
+
         assignNextPlayer();
     }
 
@@ -89,14 +75,14 @@ public class Game {
         }
 
         if (isGettingOutOfPenaltyBox(roll)) {
-            printer.print(format(OUT_OF_PENALTY_BOX_MESSAGE, players.getName(currentPlayer)));
+            printer.printOutOfPenaltyBox(players.getName(currentPlayer));
 
             players.setOutOfPenaltyBox(currentPlayer);
 
             return;
         }
 
-        printer.print(format(IN_PENALTY_BOX_MESSAGE, players.getName(currentPlayer)));
+        printer.printInPenaltyBox(players.getName(currentPlayer));
     }
 
     private boolean isGettingOutOfPenaltyBox(int roll) {
@@ -106,15 +92,11 @@ public class Game {
     private void advancePlayer(int roll) {
         players.advance(currentPlayer, roll);
 
-        printer.print(players.getName(currentPlayer)
-                + "'s new location is "
-                + players.getPosition(currentPlayer));
-
-        printer.print("The category is " + currentTheme().getDescription());
+        printer.printAdvancePlayer(players.getName(currentPlayer), players.getPosition(currentPlayer));
     }
 
     private void askQuestion() {
-        printer.print(questions.getBy(currentTheme()));
+        printer.printQuestion(currentTheme().getDescription(), questions.getBy(currentTheme()));
     }
 
     private Theme currentTheme() {
