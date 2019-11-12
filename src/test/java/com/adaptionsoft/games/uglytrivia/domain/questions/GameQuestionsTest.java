@@ -19,7 +19,7 @@ public class GameQuestionsTest {
     }
 
     @Test
-    public void shouldReturnFistQuestionForTheSpecifiedTheme() {
+    public void returnsFistQuestionForTheSpecifiedTheme() {
         String firstQuestion = gameQuestions.getBy(POP);
         String secondQuestion = gameQuestions.getBy(POP);
 

@@ -44,11 +44,13 @@ public class Player {
         inPenaltyBox = true;
     }
 
+    public void setOutOfPenaltyBox() {
+        inPenaltyBox = false;
+    }
+
     public boolean didPlayerWin() {
         return purses != INCORRECT_PURSES;
     }
 
-    public void setOutOfPenaltyBox() {
-        inPenaltyBox = false;
-    }
+
 }

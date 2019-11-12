@@ -6,9 +6,11 @@ import java.util.List;
 public class Players {
 
     private static List<Player> players;
+    private Player currentPlayer;
 
     public Players(List<Player> list) {
         this.players = list;
+        this.currentPlayer = players.get(0);
     }
 
     public static Players create(List<String> playerNames) {
@@ -26,43 +28,12 @@ public class Players {
         return players;
     }
 
-    public String getName(int player) {
-        return players.get(player).getName();
+    public Player getCurrentPlayer() {
+        return currentPlayer;
     }
 
-    public int getPosition(int player) {
-        return players.get(player).getPosition();
-    }
-
-    public int getPurses(int player) {
-        return players.get(player).getPurses();
-    }
-
-    public boolean isInPenaltyBox(int player) {
-        return players.get(player).isInPenaltyBox();
-    }
-
-    public Integer getNumberOfPlayers() {
-        return players.size();
-    }
-
-    public void advance(int player, int roll) {
-        players.get(player).advance(roll);
-    }
-
-    public void increasePurse(int player) {
-        players.get(player).increasePurse();
-    }
-
-    public boolean didPlayerWin(int player) {
-        return players.get(player).didPlayerWin();
-    }
-
-    public void setInPenaltyBox(int player) {
-        players.get(player).setInPenaltyBox();
-    }
-
-    public void setOutOfPenaltyBox(int player) {
-        players.get(player).setOutOfPenaltyBox();
+    public void setNextPlayer() {
+        int nextPlayerIndex = (players.indexOf(currentPlayer) + 1) % players.size();
+        currentPlayer = players.get(nextPlayerIndex);
     }
 }

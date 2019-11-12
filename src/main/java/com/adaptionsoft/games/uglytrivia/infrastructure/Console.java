@@ -3,6 +3,7 @@ package com.adaptionsoft.games.uglytrivia.infrastructure;
 import static java.lang.String.format;
 
 import com.adaptionsoft.games.uglytrivia.domain.Printer;
+import com.adaptionsoft.games.uglytrivia.domain.players.Player;
 import com.adaptionsoft.games.uglytrivia.domain.players.Players;
 
 public class Console implements Printer {
@@ -18,9 +19,10 @@ public class Console implements Printer {
 
     @Override
     public void printPlayers(Players players) {
-        for (int player = 0; player < players.getNumberOfPlayers(); player++) {
-            print(format(
-                PLAYER_ADDED_MESSAGE, players.getName(player), (player + 1)));
+        for (Player player : players.get()) {
+            int playerNumber = players.get().indexOf(player) + 1;
+
+            print(format(PLAYER_ADDED_MESSAGE, player.getName(), playerNumber));
         }
     }
 

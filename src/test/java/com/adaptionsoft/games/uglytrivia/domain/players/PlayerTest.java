@@ -16,40 +16,47 @@ public class PlayerTest {
     }
 
     @Test
-    public void shouldAdvancePlayerRollPositions() {
+    public void advancesPlayerRollPositions() {
         player.advance(4);
 
         assertThat(player.getPosition(), is(4));
     }
 
     @Test
-    public void shouldRestartPositionIfPositionHigherThanMaximum() {
+    public void restartsPositionIfPositionHigherThanMaximum() {
         player.advance(15);
 
         assertThat(player.getPosition(), is(3));
     }
 
     @Test
-    public void shouldIncreasePurseByOne() {
+    public void increasesPurseByOne() {
         player.increasePurse();
 
         assertThat(player.getPurses(), is(1));
     }
 
     @Test
-    public void shouldSetInPenaltyBox() {
+    public void setsInPenaltyBox() {
         player.setInPenaltyBox();
 
         assertTrue(player.isInPenaltyBox());
     }
 
     @Test
-    public void shouldReturnTrueIfPlayerWon() {
+    public void setsOutOfPenaltyBox() {
+        player.setOutOfPenaltyBox();
+
+        assertFalse(player.isInPenaltyBox());
+    }
+
+    @Test
+    public void returnsTrueIfPlayerWon() {
         assertTrue(player.didPlayerWin());
     }
 
     @Test
-    public void shouldReturnFalseIfPlayerDidNotWin() {
+    public void returnsFalseIfPlayerDidNotWin() {
         for(int i = 0; i < 6; i++) player.increasePurse();
 
         assertFalse(player.didPlayerWin());

@@ -5,6 +5,7 @@ import static com.adaptionsoft.games.uglytrivia.domain.questions.Theme.ROCK;
 import static com.adaptionsoft.games.uglytrivia.domain.questions.Theme.SCIENCE;
 import static com.adaptionsoft.games.uglytrivia.domain.questions.Theme.SPORTS;
 
+import com.adaptionsoft.games.uglytrivia.domain.players.Player;
 import com.adaptionsoft.games.uglytrivia.domain.players.Players;
 import com.adaptionsoft.games.uglytrivia.domain.questions.GameQuestions;
 import com.adaptionsoft.games.uglytrivia.domain.questions.Theme;
@@ -15,14 +16,12 @@ public class Game {
     private GameQuestions questions;
     private Players players;
 
-    private int currentPlayer;
     private boolean gameFinished;
 
     public Game(Printer printer, GameQuestions questions, Players players) {
         this.printer = printer;
         this.questions = questions;
         this.players = players;
-        this.currentPlayer = 0;
         this.gameFinished = false;
     }
 
@@ -31,11 +30,11 @@ public class Game {
     }
 
     public void roll(int roll) {
-        printer.printRoll(players.getName(currentPlayer), roll);
+        printer.printRoll(currentPlayer().getName(), roll);
 
         updatePlayerPenaltyBoxStatus(roll);
 
-        if (!players.isInPenaltyBox(currentPlayer)) {
+        if (!currentPlayer().isInPenaltyBox()) {
             advancePlayer(roll);
             askQuestion();
         }
@@ -43,26 +42,26 @@ public class Game {
     }
 
     public void correctAnswer() {
-        if (players.isInPenaltyBox(currentPlayer)) {
-            assignNextPlayer();
+        if (currentPlayer().isInPenaltyBox()) {
+            players.setNextPlayer();
             return;
         }
 
-        players.increasePurse(currentPlayer);
+        currentPlayer().increasePurse();
 
-        printer.printCorrectAnswer(players.getName(currentPlayer), players.getPurses(currentPlayer));
+        printer.printCorrectAnswer(currentPlayer().getName(), currentPlayer().getPurses());
 
-        gameFinished = players.didPlayerWin(currentPlayer);
+        gameFinished = currentPlayer().didPlayerWin();
 
-        assignNextPlayer();
+        players.setNextPlayer();
     }
 
     public void wrongAnswer() {
-        players.setInPenaltyBox(currentPlayer);
+        currentPlayer().setInPenaltyBox();
 
-        printer.printIncorrectAnswer(players.getName(currentPlayer));
+        printer.printIncorrectAnswer(currentPlayer().getName());
 
-        assignNextPlayer();
+        players.setNextPlayer();
     }
 
     public boolean isNotFinished() {
@@ -70,19 +69,19 @@ public class Game {
     }
 
     private void updatePlayerPenaltyBoxStatus(int roll) {
-        if (!players.isInPenaltyBox(currentPlayer)) {
+        if (!currentPlayer().isInPenaltyBox()) {
             return;
         }
 
         if (isGettingOutOfPenaltyBox(roll)) {
-            printer.printOutOfPenaltyBox(players.getName(currentPlayer));
+            printer.printOutOfPenaltyBox(currentPlayer().getName());
 
-            players.setOutOfPenaltyBox(currentPlayer);
+            currentPlayer().setOutOfPenaltyBox();
 
             return;
         }
 
-        printer.printInPenaltyBox(players.getName(currentPlayer));
+        printer.printInPenaltyBox(currentPlayer().getName());
     }
 
     private boolean isGettingOutOfPenaltyBox(int roll) {
@@ -90,9 +89,9 @@ public class Game {
     }
 
     private void advancePlayer(int roll) {
-        players.advance(currentPlayer, roll);
+        currentPlayer().advance(roll);
 
-        printer.printAdvancePlayer(players.getName(currentPlayer), players.getPosition(currentPlayer));
+        printer.printAdvancePlayer(currentPlayer().getName(), currentPlayer().getPosition());
     }
 
     private void askQuestion() {
@@ -100,14 +99,14 @@ public class Game {
     }
 
     private Theme currentTheme() {
-        int position = players.getPosition(currentPlayer);
+        int position = currentPlayer().getPosition();
         if (position % 4 == 0) return POP;
         if (position % 4 == 1) return SCIENCE;
         if (position % 4 == 2) return SPORTS;
         return ROCK;
     }
 
-    private void assignNextPlayer() {
-        currentPlayer = (currentPlayer+1)%players.getNumberOfPlayers();
+    private Player currentPlayer() {
+        return players.getCurrentPlayer();
     }
 }
