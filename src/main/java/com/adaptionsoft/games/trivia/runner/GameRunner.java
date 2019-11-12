@@ -27,7 +27,7 @@ public class GameRunner {
         do {
             game.roll(dice(randomNumber));
             answerQuestion(game, randomNumber);
-        } while (game.isNotFinished());
+        } while (!game.isFinished());
 
     }
 

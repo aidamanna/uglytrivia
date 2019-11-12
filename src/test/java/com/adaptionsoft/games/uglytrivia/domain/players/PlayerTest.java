@@ -51,14 +51,14 @@ public class PlayerTest {
     }
 
     @Test
-    public void returnsTrueIfPlayerWon() {
-        assertTrue(player.didPlayerWin());
+    public void returnsFalseIfPlayerPursesAreNotSix() {
+        assertFalse(player.didPlayerWin());
     }
 
     @Test
-    public void returnsFalseIfPlayerDidNotWin() {
+    public void returnsTrueIfPlayerPursesAreSix() {
         for(int i = 0; i < 6; i++) player.increasePurse();
 
-        assertFalse(player.didPlayerWin());
+        assertTrue(player.didPlayerWin());
     }
 }

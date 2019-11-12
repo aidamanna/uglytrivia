@@ -49,7 +49,7 @@ public class Player {
     }
 
     public boolean didPlayerWin() {
-        return purses != INCORRECT_PURSES;
+        return purses == INCORRECT_PURSES;
     }
 
 

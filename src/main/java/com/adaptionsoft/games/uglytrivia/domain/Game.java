@@ -64,7 +64,7 @@ public class Game {
         players.setNextPlayer();
     }
 
-    public boolean isNotFinished() {
+    public boolean isFinished() {
         return gameFinished;
     }
 

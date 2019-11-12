@@ -41,7 +41,7 @@ public class IntegrationTest {
         do {
             game.roll(dice());
             answerQuestion(game);
-        } while (game.isNotFinished());
+        } while (!game.isFinished());
 
         Approvals.verify(triviaOutput.toString());
     }
