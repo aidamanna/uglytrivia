@@ -28,6 +28,8 @@ public class GameQuestions {
     }
 
     public String getBy(Theme theme) {
-        return questions.get(theme).list().remove(0);
+        ThemeQuestions themeQuestions = questions.get(theme);
+
+        return themeQuestions.getQuestion();
     }
 }

@@ -27,4 +27,24 @@ public class ThemeQuestionsTest {
         assertThat(questions.list().get(1), is("Pop Question 1"));
         assertThat(questions.getTheme(), is(POP));
     }
+
+    @Test
+    public void getsNextQuestion() {
+        questions.generate(NUMBER_OF_QUESTIONS);
+
+        String question = questions.getQuestion();
+
+        assertThat(question, is("Pop Question 0"));
+    }
+
+    @Test
+    public void getsFistQuestionIfLastQuestionWasTheLastOne() {
+        questions.generate(NUMBER_OF_QUESTIONS);
+
+        questions.getQuestion();
+        questions.getQuestion();
+        String question = questions.getQuestion();
+
+        assertThat(question, is("Pop Question 0"));
+    }
 }
