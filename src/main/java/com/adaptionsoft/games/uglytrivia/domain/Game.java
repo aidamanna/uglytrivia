@@ -1,10 +1,5 @@
 package com.adaptionsoft.games.uglytrivia.domain;
 
-import static com.adaptionsoft.games.uglytrivia.domain.questions.Theme.POP;
-import static com.adaptionsoft.games.uglytrivia.domain.questions.Theme.ROCK;
-import static com.adaptionsoft.games.uglytrivia.domain.questions.Theme.SCIENCE;
-import static com.adaptionsoft.games.uglytrivia.domain.questions.Theme.SPORTS;
-
 import com.adaptionsoft.games.uglytrivia.domain.players.Player;
 import com.adaptionsoft.games.uglytrivia.domain.players.Players;
 import com.adaptionsoft.games.uglytrivia.domain.questions.GameQuestions;
@@ -95,15 +90,9 @@ public class Game {
     }
 
     private void askQuestion() {
-        printer.printQuestion(currentTheme().getDescription(), questions.getBy(currentTheme()));
-    }
+        Theme currentTheme = Theme.getByPosition(currentPlayer().getPosition());
 
-    private Theme currentTheme() {
-        int position = currentPlayer().getPosition();
-        if (position % 4 == 0) return POP;
-        if (position % 4 == 1) return SCIENCE;
-        if (position % 4 == 2) return SPORTS;
-        return ROCK;
+        printer.printQuestion(currentTheme.getDescription(), questions.getBy(currentTheme));
     }
 
     private Player currentPlayer() {
